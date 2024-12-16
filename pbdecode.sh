@@ -3,9 +3,6 @@
 # Protobuf wire format decoder
 # dependency: xxd
 
-# TODO
-# repeat pack
-
 TYPE_VARINT=0
 TYPE_FIXED64=1
 TYPE_BYTES=2
