@@ -120,7 +120,7 @@ automata() {
         echo "error: incomplete protobuf" >&2
         return 1
     fi
-    printf "}"
+    [ "$delimiter" != "{" ] && printf "}"
 }
 
 str=$(automata $(xxd -ps -c1))
