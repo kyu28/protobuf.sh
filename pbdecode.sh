@@ -1,12 +1,21 @@
 #!/bin/sh
 #
 # Protobuf wire format decoder
-# dependency: xxd
+# dependency: od/xxd/hexdump/busybox
 
 TYPE_VARINT=0
 TYPE_FIXED64=1
 TYPE_BYTES=2
 TYPE_FIXED32=5
+
+dump_bytes() {
+    od --version > /dev/null && od -An -tx1 && return
+    hexdump --version > /dev/null && hexdump -v -e '1/1 "%02x "' && return
+    hd --version > /dev/null && hd -v -e '1/1 "%02x "' && return
+    busybox od --help > /dev/null && busybox od -An -tx1 && return
+    busybox hexdump --help > /dev/null && busybox hexdump -v -e '1/1 "%02x "' && return
+    xxd --version > /dev/null && xxd -ps -c1 && return
+}
 
 automata() {
     n=
@@ -123,5 +132,5 @@ automata() {
     [ "$delimiter" != "{" ] && printf "}"
 }
 
-str=$(automata $(xxd -ps -c1))
+str=$(automata $(dump_bytes))
 [ $? -eq 0 ] && echo $str
